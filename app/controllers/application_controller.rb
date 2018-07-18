@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-  before_action :authenticate 
+  before_action :validate_token
   
   def logged_in?
     !current_user.nil?
@@ -9,7 +9,7 @@ class ApplicationController < ActionController::API
     @current_user ||= User.find(auth["user"])
   end
 
-  def authenticate
+  def validate_token
     if !logged_in?
       render json: {error: "unauthorized"}, status: 401 
     end
