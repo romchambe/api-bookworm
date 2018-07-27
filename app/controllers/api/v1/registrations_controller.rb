@@ -6,7 +6,7 @@ module Api::V1
       user = User.new(registration_params)
       if user.save 
         jwt = Auth.issue({user: user.id})
-        render json: {jwt: jwt, user: user.email}
+        render json: {jwt: jwt, user: {email:user.email, id:user.id}}
       else 
         render json: user.errors.full_messages
       end

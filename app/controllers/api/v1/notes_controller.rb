@@ -4,17 +4,25 @@ module Api::V1
 
     def create  
       @note = Note.new(note_params)
+      @note.user = @current_user
       if @note.save 
-        @note.images.attach(params[:images])
-        render json: @note
+        params[:images] ? @note.images.attach(params[:images]) : nil
+        note_with_key = @note.render_hash_with_attribute_key
+        render json: note_with_key
       else 
         render json: @note.errors.full_messages
       end
     end
 
-    def update
+    def index
+      notes_with_key = @current_user.notes.map { |note| 
+        note.render_hash_with_attribute_key
+      }
+      render json: notes_with_key
     end
 
+    def update
+    end
 
     def delete
     end
@@ -25,7 +33,7 @@ module Api::V1
       @note = Note.find(params[:id])
     end
 
-    def registration_params
+    def note_params
       params.require(:note).permit(:id, :title, :book, :images)
     end
   end
