@@ -6,7 +6,6 @@ module Api::V1
       @note = Note.new(note_params)
       @note.user = @current_user
       if @note.save 
-        params[:images] ? @note.images.attach(params[:images]) : nil
         note_with_key = @note.render_hash_with_attribute_key
         render json: note_with_key
       else 
@@ -34,7 +33,7 @@ module Api::V1
     end
 
     def note_params
-      params.require(:note).permit(:id, :title, :book, :images)
+      params.require(:note).permit(:id, :title, :book)
     end
   end
 end 

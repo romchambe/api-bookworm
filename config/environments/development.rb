@@ -27,6 +27,8 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.require_master_key = true
+
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :google
 
@@ -43,9 +45,7 @@ Rails.application.configure do
 
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
-  
-  # Use local disk service in development for active storage 
-  config.active_storage.service = :local
+
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

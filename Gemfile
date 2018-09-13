@@ -10,6 +10,7 @@ gem 'pg', '~> 1.0'          # Database
 gem 'rack-cors',  require: 'rack/cors'  # Allow Cross Origin Ressource Sharing
 gem 'delayed_job_active_record'         # Delayed jobs => schedule tasks
 gem 'bootsnap', require: false
+gem 'rest-client'
 
 gem "google-cloud-storage", "~> 1.8", require: false
 

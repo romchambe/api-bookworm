@@ -19,8 +19,6 @@ module Api::V1
     end
 
     def fb_create
-      puts fb_login_params
-      
       user = User.find_by(email: fb_login_params[:email])
 
       if user.nil?
