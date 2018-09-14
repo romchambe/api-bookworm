@@ -3,7 +3,7 @@ module Api::V1
 
     def create 
       begin
-        @scan = Scan.create!(user_id: params[:user_id])
+        @scan = Scan.create!(user: @current_user)
 
         decoded_data = Base64.decode64(params[:upload])
         filename = params[:filename]
@@ -22,12 +22,17 @@ module Api::V1
         @scan.relevant_text = response["responses"][0]["fullTextAnnotation"]["text"]
         @scan.save
 
-        render json: {url: gcs_url, response: @scan.relevant_text}
+        render json: {url: gcs_url, response: @scan.relevant_text, scan_id: @scan.id}
 
       rescue ActiveRecord::RecordInvalid => e
         render json: { error: e.to_s }, status: :unprocessable_entity
       end
+    end
 
+    def update
+      @scan = Scan.find(params[:scan_id])
+      @scan.update(note_id: params[:note_id])
+      render json: {}, status: :ok
     end
   end
 end 
