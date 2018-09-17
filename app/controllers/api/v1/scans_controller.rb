@@ -9,7 +9,7 @@ module Api::V1
         filename = params[:filename]
 
         File.open("#{Rails.root}/tmp/#{filename}", 'w+b') do |file|
-          decode_file = file.write(decoded_data)
+          decoded_file = file.write(decoded_data)
           @scan.upload.attach(io: decoded_file, filename: filename)
         end
 
