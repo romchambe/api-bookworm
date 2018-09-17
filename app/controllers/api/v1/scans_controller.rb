@@ -10,6 +10,7 @@ module Api::V1
 
         File.open("#{Rails.root}/tmp/#{filename}", 'w+b') do |file|
           file.write(decoded_image)
+          sleep 0.2
           @scan.upload.attach(io: file, filename: filename)
         end
 
