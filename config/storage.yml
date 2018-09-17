@@ -18,7 +18,7 @@ local:
 google:
   service: GCS
   project: "bookworm-211213"
-  credentials: <%= Rails.root.join("key.json") %>
+  credentials: <%= Rails.env.production? ? ENV['GOOGLE_STORAGE_KEY'] : Rails.root.join("key.json") %>
   bucket: "bookwormapp_24072018"
 
 
