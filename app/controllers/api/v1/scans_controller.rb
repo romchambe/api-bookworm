@@ -8,7 +8,7 @@ module Api::V1
         decoded_data = Base64.decode64(params[:upload])
         filename = params[:filename]
 
-        File.open("#{Rails.root}/tmp/images/#{filename}", 'wb') do |file|
+        File.open("#{Rails.root}/tmp/#{filename}", 'wb') do |file|
           file.write(decoded_data)
           @scan.upload.attach(io: file, filename: filename)
         end
