@@ -9,8 +9,9 @@ Rails.application.routes.draw do
       post '/login', to: "sessions#create"  
       post '/fb_login', to: "sessions#fb_create"
       delete '/logout', to: "sessions#delete"  
+      # post '/rails/active_storage/direct_uploads', to: 'direct_uploads#create'
     end
   end
 
-  post '/rails/active_storage/direct_uploads' => 'direct_uploads#create'
+  
 end

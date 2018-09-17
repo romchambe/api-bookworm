@@ -5,14 +5,16 @@ module Api::V1
       begin
         @scan = Scan.create!(user: @current_user)
 
-        decoded_data = Base64.decode64(params[:upload])
+        decoded_image = Base64.decode64(params[:upload])
         filename = params[:filename]
 
-        File.open("#{Rails.root}/tmp/#{filename}", 'w+b') do |file|
-          decoded_file = file.write(decoded_data)
-          @scan.upload.attach(io: decoded_file, filename: filename)
+        File.open("#{Rails.root}/tmp/images/#{filename}", 'wb') do |file|
+          file.write(decoded_image)
+          @scan.upload.attach(io: file, filename: filename)
         end
 
+       
+        
         FileUtils.rm("#{Rails.root}/tmp/images/#{filename}")
 
         gcs_url = @scan.upload.service_url.split(/bookwormapp_24072018\//)[1].split(/\?/)[0]
