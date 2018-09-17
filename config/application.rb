@@ -22,11 +22,11 @@ module ApiBookworm
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
-    config.autoload_paths << Rails.root.join('lib')  
+    config.eager_load_paths << Rails.root.join('lib')
     
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'http://localhost:3000'
+        origins '*'
         resource '*', :headers => :any, :methods => [:get, :post, :put, :delete, :options]
       end
     end
