@@ -9,8 +9,13 @@ module Api::V1
         filename = params[:filename]
 
         File.open("#{Rails.root}/tmp/#{filename}", 'w+b') do |file|
+          puts 'INIT'
+          puts file
+          puts 'init'
           file.write(decoded_image)
-          sleep 0.2
+          puts file
+          sleep 0.5
+          puts 'Start attachment'
           @scan.upload.attach(io: file, filename: filename)
         end
 
