@@ -8,14 +8,12 @@ module Api::V1
         decoded_image = Base64.decode64(params[:upload])
         filename = params[:filename]
 
-        File.open("#{Rails.root}/tmp/images/#{filename}", 'wb') do |file|
+        File.open("#{Rails.root}/tmp/#{filename}", 'w+b') do |file|
           file.write(decoded_image)
           @scan.upload.attach(io: file, filename: filename)
         end
 
-       
-        
-        FileUtils.rm("#{Rails.root}/tmp/images/#{filename}")
+        FileUtils.rm("#{Rails.root}/tmp/#{filename}")
 
         gcs_url = @scan.upload.service_url.split(/bookwormapp_24072018\//)[1].split(/\?/)[0]
         response = GoogleVisionAnalyzer.new(gcs_url: gcs_url).perform
