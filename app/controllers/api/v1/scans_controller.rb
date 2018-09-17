@@ -8,16 +8,16 @@ module Api::V1
         decoded_image = Base64.decode64(params[:upload])
         filename = params[:filename]
 
-        StringIO.open(decoded_image, 'w+b') do |file|
-          @scan.upload.attach(io: file, filename: filename)
-        end
+        @scan.upload.attach(io: StringIO.new(decoded_image, 'rb'), filename: filename)
 
 
         gcs_url = @scan.upload.service_url.split(/bookwormapp_24072018\//)[1].split(/\?/)[0]
         response = GoogleVisionAnalyzer.new(gcs_url: gcs_url).perform
 
         @scan.full_response = response
-        @scan.relevant_text = response["responses"][0]["fullTextAnnotation"]["text"]
+        unless response["responses"][0]["fullTextAnnotation"]["text"].nil? 
+          @scan.relevant_text = response["responses"][0]["fullTextAnnotation"]["text"] 
+        end 
         @scan.save
 
         render json: {url: gcs_url, response: @scan.relevant_text, scan_id: @scan.id}
