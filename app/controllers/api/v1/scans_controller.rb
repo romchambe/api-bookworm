@@ -10,9 +10,9 @@ module Api::V1
 
         File.open("#{Rails.root}/tmp/images/#{filename}", 'wb') do |file|
           file.write(decoded_data)
+          @scan.upload.attach(io: file, filename: filename)
         end
 
-        @scan.upload.attach(io: File.open("#{Rails.root}/tmp/images/#{filename}"), filename: filename)
         FileUtils.rm("#{Rails.root}/tmp/images/#{filename}")
 
         gcs_url = @scan.upload.service_url.split(/bookwormapp_24072018\//)[1].split(/\?/)[0]
