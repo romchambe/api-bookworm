@@ -10,7 +10,6 @@ module Api::V1
 
         @scan.upload.attach(io: StringIO.new(decoded_image, 'rb'), filename: filename)
 
-
         gcs_url = @scan.upload.service_url.split(/bookwormapp_24072018\//)[1].split(/\?/)[0]
         response = GoogleVisionAnalyzer.new(gcs_url: gcs_url).perform
 
