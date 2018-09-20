@@ -10,11 +10,12 @@ module Api::V1
           jwt = Auth.issue({user: user.id})
           render json: {jwt: jwt, user: {email:user.email, id:user.id}}
         else
-          render json: {message:'The password provided is incorrect'}, status: :bad_request
+          render json: { message: 'Invalid password' }.to_json, status: :bad_request
         end
         
       rescue ActiveRecord::RecordNotFound => e
-        render json: { error: e.to_s }, status: :not_found
+        puts e 
+        render json: { message: 'This user does not exist' }.to_json, status: :not_found
       end  
     end
 
