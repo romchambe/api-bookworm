@@ -10,12 +10,12 @@ module Api::V1
           jwt = Auth.issue({user: user.id})
           render json: {jwt: jwt, user: {email:user.email, id:user.id}}
         else
-          render json: { message: 'Invalid password' }.to_json, status: :bad_request
+          render json: { error: true, message: 'Invalid password' }.to_json, status: :bad_request
         end
         
       rescue ActiveRecord::RecordNotFound => e
         puts e 
-        render json: { message: 'This user does not exist' }.to_json, status: :not_found
+        render json: { error: true, message: 'This user does not exist' }.to_json, status: :not_found
       end  
     end
 
@@ -25,7 +25,7 @@ module Api::V1
       if user.nil?
         user = User.create(email: fb_login_params[:email], password: fb_login_params[:id], password_confirmation: fb_login_params[:id])
         if !user.valid?
-          return render json: {message:'There was an issue creating the user'}, status: :bad_request
+          return render json: {error: true, message:'There was an issue creating the user'}, status: :bad_request
         end
       end
 

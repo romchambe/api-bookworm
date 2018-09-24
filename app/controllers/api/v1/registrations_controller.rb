@@ -8,7 +8,7 @@ module Api::V1
         jwt = Auth.issue({user: user.id})
         render json: {jwt: jwt, user: {email: user.email, id: user.id}}
       else 
-        render json: {message: user.errors.full_messages}.to_json, status: :bad_request
+        render json: { error: true, message: user.errors.full_messages }.to_json, status: :bad_request
       end
     end
 

@@ -10,7 +10,7 @@ module Api::V1
         puts note_with_key.to_json
         render json: note_with_key
       else 
-        render json: @note.errors.full_messages
+        render json: { error: true, message: @note.errors.full_messages}
       end
     end
 
