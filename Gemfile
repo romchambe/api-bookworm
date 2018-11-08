@@ -7,6 +7,8 @@ gem 'redis', '~> 4.0'       # Use Redis adapter to run Action Cable in productio
 gem 'bcrypt', '~> 3.1.7'    # Authentication
 gem 'jwt'                   # encoding and decoding of HMACSHA256 tokens available in the Rails application  
 gem 'pg', '~> 1.0'          # Database
+gem "loofah", ">= 2.2.3"
+
 gem 'rack-cors',  require: 'rack/cors'  # Allow Cross Origin Ressource Sharing
 gem 'delayed_job_active_record'         # Delayed jobs => schedule tasks
 gem 'bootsnap', require: false
