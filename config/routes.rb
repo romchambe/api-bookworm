@@ -3,9 +3,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resource :registrations
-      resource :notes
-      get '/notes_index', to: "notes#index"
-      post '/scans', to: "scans#create"
+      resource :books
+     
+      post '/quotes', to: "quotes#create"
       post '/login', to: "sessions#create"  
       post '/fb_login', to: "sessions#fb_create"
       delete '/logout', to: "sessions#delete"  
