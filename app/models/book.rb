@@ -1,4 +1,4 @@
-class Note < ApplicationRecord
+class Book < ApplicationRecord
 
   belongs_to :user
 
