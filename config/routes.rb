@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resource :books
      
       post '/quotes', to: "quotes#create"
+      post '/comments', to: "comments#create"
       post '/login', to: "sessions#create"  
       post '/fb_login', to: "sessions#fb_create"
       delete '/logout', to: "sessions#delete"  
