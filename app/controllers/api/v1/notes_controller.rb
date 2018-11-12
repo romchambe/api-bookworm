@@ -14,7 +14,7 @@ module Api::V1
       end
     end
 
-    def show
+    def index
       books_with_key = @current_user.books.map { |book| 
         book.render_hash_with_attribute_key
       }
