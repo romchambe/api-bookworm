@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_13_131939) do
+ActiveRecord::Schema.define(version: 2018_11_14_174230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,23 @@ ActiveRecord::Schema.define(version: 2018_09_13_131939) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "books", force: :cascade do |t|
+    t.string "title"
+    t.string "author"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_books_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "quote_id"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quote_id"], name: "index_comments_on_quote_id"
+  end
+
   create_table "notes", force: :cascade do |t|
     t.string "title"
     t.string "book"
@@ -44,6 +61,15 @@ ActiveRecord::Schema.define(version: 2018_09_13_131939) do
     t.bigint "user_id"
     t.text "content"
     t.index ["user_id"], name: "index_notes_on_user_id"
+  end
+
+  create_table "quotes", force: :cascade do |t|
+    t.bigint "book_id"
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_quotes_on_book_id"
   end
 
   create_table "scans", force: :cascade do |t|
@@ -73,6 +99,9 @@ ActiveRecord::Schema.define(version: 2018_09_13_131939) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "books", "users"
+  add_foreign_key "comments", "quotes"
   add_foreign_key "notes", "users"
+  add_foreign_key "quotes", "books"
   add_foreign_key "scans", "users"
 end

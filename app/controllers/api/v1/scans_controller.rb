@@ -32,5 +32,4 @@ module Api::V1
       render json: {}, status: :ok
     end
   end
-end 
-
+end
