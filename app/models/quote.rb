@@ -1,6 +1,3 @@
 class Quote < ApplicationRecord
-  belongs_to :user
-  has_one_attached :upload
-
-  serialize :full_response
+  belongs_to :book
 end
