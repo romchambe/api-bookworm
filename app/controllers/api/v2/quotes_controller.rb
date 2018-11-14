@@ -1,5 +1,5 @@
 module Api::V1
-  class quotesController < ApplicationController
+  class QuotesController < ApplicationController
 
     def create 
       begin
