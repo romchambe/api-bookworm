@@ -1,5 +1,5 @@
 module Api::V1
-  class booksController < ApplicationController
+  class BooksController < ApplicationController
     before_action :find_book, only: [:update]
 
     def create  
