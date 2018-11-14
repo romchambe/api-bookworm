@@ -1,4 +1,4 @@
-module Api::V1
+module Api::V2
   class BooksController < ApplicationController
     before_action :find_book, only: [:update]
 
