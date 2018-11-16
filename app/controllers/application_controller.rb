@@ -2,17 +2,18 @@ class ApplicationController < ActionController::API
   before_action :validate_token
   
   def logged_in?
-    !current_user.nil?
+    !!current_user
   end
 
   def current_user
-    @current_user ||= User.find(auth["user"])
+    binding.pry
+    if !!request.env.fetch("HTTP_AUTHORIZATION", "").scan(/Bearer/).flatten.first && !!(user = User.find_by(id: auth["user"]))
+      @current_user ||= user
+    end 
   end
 
   def validate_token
-    if !logged_in?
-      render json: {error: "unauthorized"}, status: 401 
-    end
+    render json: {error: "unauthorized"}, status: 401 unless logged_in?
   end
 
   private
