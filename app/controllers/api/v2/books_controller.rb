@@ -6,16 +6,18 @@ module Api::V2
       @book = Book.new(valid_params(:book))
       @book.user = @current_user
 
+
+
       if @book.save 
         errors_on_dependents = []
 
-        if !valid_params(:quote).empty? && !!(quote = Quote.new(valid_params(:quote)))
+        if !!valid_params(:quote) && !!(quote = Quote.new(valid_params(:quote)))
           quote.book = @book 
           quote.save
           errors_on_dependents.concat(quote.errors.full_messages) unless quote.save
         end
-        puts valid_params(:comment)
-        if !valid_params(:comment).empty? && !!(comment = Comment.new(valid_params(:comment)))
+
+        if !!valid_params(:comment) && !!(comment = Comment.new(valid_params(:comment)))
           comment.book = @book
           comment.quote = quote unless !(!!quote)
           errors_on_dependents.concat(comment.errors.full_messages) unless comment.save 
@@ -60,7 +62,7 @@ module Api::V2
         comment: [:content]
       }
 
-      params.require(resource).permit(permitted[resource])
+      params.require(resource).permit(permitted[resource]) if params[resource].present?
     end
   end
 end 
