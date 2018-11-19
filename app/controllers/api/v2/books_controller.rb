@@ -1,13 +1,12 @@
 module Api::V2
   class BooksController < ApplicationController
-    before_action :find_book, only: [:update]
+    before_action :find_book, only: [:update, :destroy, :show]
 
     def create  
       @book = Book.new(valid_params(:book))
       @book.user = @current_user
 
-
-
+      p valid_params(:book)
       if @book.save 
         errors_on_dependents = []
 
@@ -34,30 +33,33 @@ module Api::V2
       end
     end
 
-    def show
-      books_with_key = @current_user.books.map { |book| 
-        book.render_hash_with_attribute_key
-      }
-      render json: books_with_key
+    def index
+      render json: @current_user.books
     end
 
-    def update
-      @book.update(book_params)
+    def show
       render json: @book
     end
 
-    def delete
+
+    def update
+      @book.update(valid_params(:book))
+      render json: @book
+    end
+
+    def destroy
+      @book.destroy
     end
 
     private 
 
     def find_book
-      @book = Book.find(params[:id])
+      @book = Book.find(valid_params(:book)[:id])
     end
 
     def valid_params(resource)
       permitted = { 
-        book: [:title, :author], 
+        book: [:title, :author, :id], 
         quote: [:title, :content], 
         comment: [:content]
       }
