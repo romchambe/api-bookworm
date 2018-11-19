@@ -1,7 +1,6 @@
-class Quote < ApplicationRecord
+class Comment < ApplicationRecord
   belongs_to :book
-  has_one_attached :upload
-  has_many :comments
+  belongs_to :quote, optional: :true
 
   validates :content, presence: :true, length: {minimum: 2}
 end

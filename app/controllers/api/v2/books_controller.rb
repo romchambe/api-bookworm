@@ -3,14 +3,32 @@ module Api::V2
     before_action :find_book, only: [:update]
 
     def create  
-      @book = Book.new(book_params)
+      @book = Book.new(valid_params(:book))
       @book.user = @current_user
+
       if @book.save 
-        book_with_key = @book.render_hash_with_attribute_key
-        puts book_with_key.to_json
-        render json: book_with_key
+        errors_on_dependents = []
+
+        if !valid_params(:quote).empty? && !!(quote = Quote.new(valid_params(:quote)))
+          quote.book = @book 
+          quote.save
+          errors_on_dependents.concat(quote.errors.full_messages) unless quote.save
+        end
+        puts valid_params(:comment)
+        if !valid_params(:comment).empty? && !!(comment = Comment.new(valid_params(:comment)))
+          comment.book = @book
+          comment.quote = quote unless !(!!quote)
+          errors_on_dependents.concat(comment.errors.full_messages) unless comment.save 
+        end 
+
+        render json: { 
+          book: @book, 
+          errors_on_dependent: !errors_on_dependents.empty?, 
+          message: errors_on_dependents.empty? ? nil : errors_on_dependents 
+        }
+
       else 
-        render json: { error: true, message: @book.errors.full_messages}
+        render json: { error: true, message: @book.errors.full_messages }, status: :unprocessable_entity
       end
     end
 
@@ -35,8 +53,14 @@ module Api::V2
       @book = Book.find(params[:id])
     end
 
-    def book_params
-      params.require(:book).permit(:id, :title, :book, :content)
+    def valid_params(resource)
+      permitted = { 
+        book: [:title, :author], 
+        quote: [:title, :content], 
+        comment: [:content]
+      }
+
+      params.require(resource).permit(permitted[resource])
     end
   end
 end 

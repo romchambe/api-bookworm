@@ -15,9 +15,9 @@ Rails.application.routes.draw do
       resource :registrations
 
       resource :books
-     
-      post '/quotes', to: "quotes#create"
-      post '/comments', to: "comments#create"
+      resource :quotes
+      resource :comments
+      
       post '/login', to: "sessions#create"  
       post '/fb_login', to: "sessions#fb_create"
       delete '/logout', to: "sessions#delete"  

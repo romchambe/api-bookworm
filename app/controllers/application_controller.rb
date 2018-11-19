@@ -6,7 +6,6 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-    binding.pry
     if !!request.env.fetch("HTTP_AUTHORIZATION", "").scan(/Bearer/).flatten.first && !!(user = User.find_by(id: auth["user"]))
       @current_user ||= user
     end 

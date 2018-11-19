@@ -28,7 +28,7 @@ module Api::V2
 
     def update
       @quote = Quote.find(params[:quote_id])
-      @quote.update(note_id: params[:note_id])
+      @quote.update(book_id: params[:book_id])
       render json: {}, status: :ok
     end
   end
