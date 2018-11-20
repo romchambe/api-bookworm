@@ -34,7 +34,9 @@ module Api::V2
     end
 
     def index
-      render json: @current_user.books
+
+      @books =  @current_user.books.includes(:quotes)
+      render json: { bookList: @books.map { |book| book.with_quote_count } }
     end
 
     def show
