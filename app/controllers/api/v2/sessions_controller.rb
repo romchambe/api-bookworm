@@ -23,7 +23,7 @@ module Api::V2
       user = User.find_by(email: fb_login_params[:email])
 
       if user.nil?
-        user = User.create(email: fb_login_params[:email], password: fb_login_params[:id], password_confirmation: fb_login_params[:id])
+        user = User.create(username: fb_login_params[:username], email: fb_login_params[:email], password: fb_login_params[:id], password_confirmation: fb_login_params[:id])
         if !user.valid?
           return render json: {error: true, message:'There was an issue creating the user'}, status: :bad_request
         end
