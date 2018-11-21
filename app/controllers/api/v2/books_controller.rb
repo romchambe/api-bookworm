@@ -1,6 +1,6 @@
 module Api::V2
   class BooksController < ApplicationController
-    before_action :find_book, only: [:update, :destroy, :show]
+    before_action :find_book, only: [:update, :destroy, :book_details]
 
     def create  
       @book = Book.new(valid_params(:book))
@@ -31,14 +31,22 @@ module Api::V2
       end
     end
 
-    def index
-
+    def show
       @books =  @current_user.books.includes(:quotes)
       render json: { booksList: @books.map { |book| book.with_quote_count } }
     end
 
-    def show
-      render json: @book
+    def book_details
+      quotes = @book.quotes.includes(:comments)
+      render json: {
+        book: @book, 
+        quotes: quotes.map {|quote| 
+          {
+            quote: quote,
+            comments: quote.comments
+          }
+        }
+      }
     end
 
 
@@ -54,12 +62,12 @@ module Api::V2
     private 
 
     def find_book
-      @book = Book.find(valid_params(:book)[:id])
+      @book = Book.find(params[:id])
     end
 
     def valid_params(resource)
       permitted = { 
-        book: [:title, :author, :id], 
+        book: [:title, :author], 
         quote: [:title, :content], 
         comment: [:content]
       }

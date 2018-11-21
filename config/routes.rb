@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       resource :quotes
       resource :comments
 
-      get '/books/index', to: "books#index"
+      get '/books/:id', to: "books#book_details"
       post '/login', to: "sessions#create"  
       post '/fb_login', to: "sessions#fb_create"
       delete '/logout', to: "sessions#delete"  
