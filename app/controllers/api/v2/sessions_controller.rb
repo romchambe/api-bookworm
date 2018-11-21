@@ -8,7 +8,7 @@ module Api::V2
 
         if user.authenticate(login_params[:password])
           jwt = Auth.issue({user: user.id})
-          render json: {jwt: jwt, user: {email:user.email, id:user.id}}
+          render json: {jwt: jwt, user: { username: user.username, email: user.email, id: user.id}}
         else
           render json: { error: true, message: 'Invalid password' }.to_json, status: :bad_request
         end

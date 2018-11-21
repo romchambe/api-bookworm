@@ -6,7 +6,7 @@ module Api::V2
       user = User.new(registration_params)
       if user.save 
         jwt = Auth.issue({user: user.id})
-        render json: {jwt: jwt, user: {username: user.username, email: user.email, id: user.id}}
+        render json: {jwt: jwt, user: { username: user.username, email: user.email, id: user.id} }
       else 
         render json: { error: true, message: user.errors.full_messages }.to_json, status: :bad_request
       end
