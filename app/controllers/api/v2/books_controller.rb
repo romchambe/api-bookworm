@@ -6,10 +6,9 @@ module Api::V2
       @book = Book.new(valid_params(:book))
       @book.user = @current_user
 
-      p valid_params(:book)
       if @book.save 
         errors_on_dependents = []
-
+        p @book
         if !!valid_params(:quote) && !!(quote = Quote.new(valid_params(:quote)))
           quote.book = @book 
           quote.save
@@ -27,7 +26,6 @@ module Api::V2
           errors_on_dependent: !errors_on_dependents.empty?, 
           message: errors_on_dependents.empty? ? nil : errors_on_dependents 
         }
-
       else 
         render json: { error: true, message: @book.errors.full_messages }, status: :unprocessable_entity
       end
