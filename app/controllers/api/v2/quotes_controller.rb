@@ -2,6 +2,12 @@ module Api::V2
   class QuotesController < ApplicationController
     before_action :find_quote, only: [:update]
     def create 
+      @quote = Quote.new(quote_params)
+      if @quote.save
+        render json: {quote: @quote}
+      else
+        render json: { error: true, message: @quote.errors.full_messages }, status: :unprocessable_entity
+      end
     end
 
     def update
@@ -12,7 +18,7 @@ module Api::V2
     private
 
     def quote_params
-      params.require(:quote).permit(:id, :content, :title)
+      params.require(:quote).permit(:id, :content, :title, :book_id)
     end
 
     def find_quote

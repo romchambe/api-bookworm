@@ -2,6 +2,12 @@ module Api::V2
   class CommentsController < ApplicationController
     before_action :find_comment, only: [:update]
     def create 
+      @comment = comment.new(comment_params)
+      if @comment.save
+        render json: {comment: @comment}
+      else
+        render json: { error: true, message: @comment.errors.full_messages }, status: :unprocessable_entity
+      end
     end
 
     def update
